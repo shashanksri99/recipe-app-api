@@ -9,10 +9,19 @@ class ModelTest(TestCase):
         """
         email = "testing@gmail.com"
         password = "Testing@1234"
-        user = get_user_model().objects.create.create_user(
+        user = get_user_model().objects.create_user(
             email = email,
             password = password
         )
 
         self.assertEqual(user.email, email)
-        self.assertTrue(user.ckeck_password(password))
+        self.assertTrue(user.check_password(password))
+
+    def test_new_user_email_normalized(self):
+        """
+        Testing for the doamin name in an email address to be case insensitive
+        """
+        email = 'test@GMAIL.COM'
+        user = get_user_model().objects.create_user( email, 'testing123')
+
+        self.assertEqual(user.email, email.lower())
